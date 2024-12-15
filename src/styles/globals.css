@@ -7,14 +7,18 @@
 @layer base {
   :root {
     /* Colors */
-    --color-background: 15 18 24;        /* #0F1218 */
-    --color-background-secondary: 21 25 34;  /* #151922 */
-    --color-primary: 139 92 246;         /* #8B5CF6 */
-    --color-primary-hover: 124 58 237;   /* #7C3AED */
-    --color-accent-purple: 139 92 246;   /* #8B5CF6 */
-    --color-accent-pink: 236 72 153;     /* #EC4899 */
-    --color-text-primary: 255 255 255;   /* #FFFFFF */
-    --color-text-secondary: 148 163 184; /* #94A3B8 */
+    --background: #0A0B0F;
+    --background-secondary: #12141C;
+    --background-hover: #1A1D28;
+    --text-primary: #FFFFFF;
+    --text-secondary: #8B8D93;
+    --primary: #6366F1;
+    --primary-hover: #4F46E5;
+    --card-border: #1F2937;
+    --input-background: #1A1D28;
+    --tag-background: #1F2430;
+    --nav-indicator: #6366F1;
+    --nav-hover: rgba(99, 102, 241, 0.1);
     
     /* Spacing */
     --header-height: 4rem;
@@ -36,6 +40,9 @@
     @apply relative h-full bg-background font-sans text-text-primary;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background: var(--background);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   }
 
   /* Typography */
@@ -59,27 +66,58 @@
 /* Component styles */
 @layer components {
   /* Buttons */
-  .btn-primary {
-    @apply inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 text-[15px] font-medium text-white transition-all hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background;
+  .primary-button {
+    @apply bg-primary hover:bg-primary-hover text-white font-medium py-2 px-4 rounded-lg transition-all duration-200;
   }
   
-  .btn-secondary {
-    @apply inline-flex h-10 items-center justify-center rounded-md border border-text-secondary/20 bg-background-secondary px-4 text-[15px] font-medium text-text-primary transition-all hover:bg-background-secondary/80 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background;
+  .secondary-button {
+    @apply bg-tag-background hover:bg-background-hover text-text-secondary hover:text-text-primary font-medium py-2 px-4 rounded-lg transition-all duration-200;
+  }
+
+  /* Navigation */
+  .nav-link {
+    @apply relative px-3 py-2 text-base font-medium transition-all duration-200 rounded-lg;
+  }
+
+  .nav-link::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-nav-indicator transition-all duration-200;
+  }
+
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+
+  .nav-link:hover {
+    @apply bg-nav-hover text-text-primary;
+  }
+
+  .nav-link.active {
+    @apply text-primary;
+  }
+
+  .nav-link.active::after {
+    @apply w-full;
+  }
+
+  /* Mobile Navigation */
+  .mobile-nav-link {
+    @apply block w-full px-4 py-3 text-base font-medium transition-all duration-200 rounded-lg hover:bg-nav-hover hover:text-primary;
   }
 
   /* Cards */
   .card {
-    @apply rounded-lg bg-background-secondary p-6 transition-all hover:ring-1 hover:ring-primary/50;
+    @apply bg-background-secondary rounded-xl border border-card-border hover:border-primary/50 transition-all duration-200;
   }
 
   /* Form inputs */
-  .input {
-    @apply w-full rounded-md border border-text-secondary/20 bg-background-secondary px-4 py-2 text-text-primary placeholder-text-secondary/50 transition-all focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary;
+  input, select, textarea {
+    @apply bg-input-background border border-card-border rounded-lg px-4 py-2 text-text-primary placeholder-text-secondary focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-200;
   }
 
   /* Tags/Badges */
   .tag {
-    @apply inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary;
+    @apply px-3 py-1 rounded-lg text-sm bg-tag-background text-text-secondary;
   }
 }
 
