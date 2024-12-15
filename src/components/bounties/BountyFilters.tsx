@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { FunnelIcon } from '@heroicons/react/24/outline';
 
-// Define filter options
-const BOUNTY_TYPES = ['Remote Small', 'Remote Medium', 'Remote Large', 'On-site'];
+// Move constants outside component to prevent recreating on each render
+const BOUNTY_TYPES = ['Remote Small', 'Remote Medium', 'Remote Large', 'On-site'] as const;
 const CATEGORIES = [
   'AI Optimization',
   'Social Impact',
@@ -12,47 +12,74 @@ const CATEGORIES = [
   'Mobile Development',
   'Data Science',
   'Blockchain',
-];
+] as const;
+
+const MIN_PRIZE = 0;
+const MAX_PRIZE = 10000;
+
+// Improve type safety with literal types
+type BountyType = typeof BOUNTY_TYPES[number];
+type Category = typeof CATEGORIES[number];
 
 interface BountyFiltersProps {
   onFilterChange: (filters: {
-    type: string[];
-    category: string[];
+    type: BountyType[];
+    category: Category[];
     prizeRange: [number, number];
   }) => void;
 }
 
 export default function BountyFilters({ onFilterChange }: BountyFiltersProps) {
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [prizeRange, setPrizeRange] = useState<[number, number]>([0, 10000]);
+  const [selectedTypes, setSelectedTypes] = useState<BountyType[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+  const [prizeRange, setPrizeRange] = useState<[number, number]>([MIN_PRIZE, MAX_PRIZE]);
 
-  useEffect(() => {
-    onFilterChange({
-      type: selectedTypes,
-      category: selectedCategories,
-      prizeRange,
-    });
-  }, [selectedTypes, selectedCategories, prizeRange, onFilterChange]);
-
-  const handleTypeToggle = (type: string) => {
+  // Memoize handlers to prevent unnecessary rerenders
+  const handleTypeToggle = useCallback((type: BountyType) => {
     setSelectedTypes(prev =>
       prev.includes(type)
         ? prev.filter(t => t !== type)
         : [...prev, type]
     );
-  };
+  }, []);
 
-  const handleCategoryToggle = (category: string) => {
+  const handleCategoryToggle = useCallback((category: Category) => {
     setSelectedCategories(prev =>
       prev.includes(category)
         ? prev.filter(c => c !== category)
         : [...prev, category]
     );
-  };
+  }, []);
+
+  const handlePrizeRangeChange = useCallback((index: 0 | 1, value: number) => {
+    setPrizeRange(prev => {
+      const newRange: [number, number] = [...prev] as [number, number];
+      newRange[index] = value;
+      // Ensure min doesn't exceed max and vice versa
+      if (index === 0 && value > newRange[1]) {
+        newRange[1] = value;
+      } else if (index === 1 && value < newRange[0]) {
+        newRange[0] = value;
+      }
+      return newRange;
+    });
+  }, []);
+
+  // Debounce filter changes to prevent too frequent updates
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      onFilterChange({
+        type: selectedTypes,
+        category: selectedCategories,
+        prizeRange,
+      });
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [selectedTypes, selectedCategories, prizeRange, onFilterChange]);
 
   return (
-    <div className="bg-white p-4 rounded-lg border border-gray-200">
+    <div className="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
       <div className="flex items-center mb-4">
         <FunnelIcon className="h-5 w-5 text-gray-500 mr-2" />
         <h2 className="text-lg font-semibold">Filters</h2>
@@ -102,10 +129,10 @@ export default function BountyFilters({ onFilterChange }: BountyFiltersProps) {
             <label className="text-xs text-gray-500">Min: ${prizeRange[0]}</label>
             <input
               type="range"
-              min="0"
-              max="10000"
+              min={MIN_PRIZE}
+              max={MAX_PRIZE}
               value={prizeRange[0]}
-              onChange={(e) => setPrizeRange([parseInt(e.target.value), prizeRange[1]])}
+              onChange={(e) => handlePrizeRangeChange(0, parseInt(e.target.value))}
               className="w-full"
             />
           </div>
@@ -113,10 +140,10 @@ export default function BountyFilters({ onFilterChange }: BountyFiltersProps) {
             <label className="text-xs text-gray-500">Max: ${prizeRange[1]}</label>
             <input
               type="range"
-              min="0"
-              max="10000"
+              min={MIN_PRIZE}
+              max={MAX_PRIZE}
               value={prizeRange[1]}
-              onChange={(e) => setPrizeRange([prizeRange[0], parseInt(e.target.value)])}
+              onChange={(e) => handlePrizeRangeChange(1, parseInt(e.target.value))}
               className="w-full"
             />
           </div>

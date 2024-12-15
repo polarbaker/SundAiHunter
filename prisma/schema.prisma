@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  bounties      Bounty[]
+}
+
+model Bounty {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  prize       Float
+  type        String
+  deadline    DateTime
+  status      String
+  category    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  sponsor     User     @relation(fields: [sponsorId], references: [id])
+  sponsorId   String
+}
