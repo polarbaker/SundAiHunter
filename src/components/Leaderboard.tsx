@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { TrophyIcon } from '@heroicons/react/24/solid';
 
 type LeaderboardEntry = {
   rank: number;
@@ -54,27 +55,44 @@ const mockLeaderboardData: LeaderboardEntry[] = [
 export default function Leaderboard() {
   return (
     <div className="bg-background-secondary rounded-lg shadow-lg p-6">
-      <h2 className="text-2xl font-bold text-text-primary mb-6">Top Hackers</h2>
+      <div className="flex items-center gap-3 mb-8">
+        <TrophyIcon className="w-6 h-6 text-yellow-500" />
+        <h2 className="text-2xl font-bold text-gradient">Top Hackers</h2>
+      </div>
       
-      <div className="space-y-4">
+      {/* Column Headers */}
+      <div className="grid grid-cols-12 gap-4 px-4 mb-4 text-sm text-text-secondary">
+        <div className="col-span-5">Hacker</div>
+        <div className="col-span-2 text-right">Score</div>
+        <div className="col-span-2 text-right">Bounties</div>
+        <div className="col-span-3 text-right">Earnings</div>
+      </div>
+
+      <div className="space-y-3">
         {mockLeaderboardData.map((entry) => (
           <div
             key={entry.hacker.id}
-            className="flex items-center justify-between p-4 rounded-lg bg-background hover:bg-background-hover transition-colors duration-200"
+            className="grid grid-cols-12 gap-4 items-center p-4 rounded-lg bg-background hover:bg-background-hover transition-all duration-200 hover:shadow-lg"
           >
-            {/* Rank and Avatar */}
-            <div className="flex items-center space-x-4">
-              <span className={`
-                w-8 h-8 flex items-center justify-center rounded-full
-                ${entry.rank === 1 ? 'bg-yellow-500' : 
-                  entry.rank === 2 ? 'bg-gray-300' :
-                  entry.rank === 3 ? 'bg-amber-600' : 'bg-gray-700'}
-                text-background font-bold
-              `}>
-                {entry.rank}
-              </span>
-              
-              <div className="relative w-10 h-10 rounded-full overflow-hidden">
+            {/* Rank and Hacker Info */}
+            <div className="col-span-5 flex items-center gap-4">
+              <div className="flex items-center justify-center w-8 h-8">
+                {entry.rank === 1 ? (
+                  <div className="w-8 h-8 flex items-center justify-center rounded-full bg-yellow-500/10 text-yellow-500 font-bold">
+                    1
+                  </div>
+                ) : entry.rank === 2 ? (
+                  <div className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-300/10 text-gray-300 font-bold">
+                    2
+                  </div>
+                ) : (
+                  <div className="w-8 h-8 flex items-center justify-center rounded-full bg-amber-600/10 text-amber-600 font-bold">
+                    3
+                  </div>
+                )}
+              </div>
+
+              <div className="relative w-10 h-10 rounded-full overflow-hidden bg-background-secondary border border-card-border">
                 {entry.hacker.image ? (
                   <Image
                     src={entry.hacker.image}
@@ -90,31 +108,33 @@ export default function Leaderboard() {
                   </div>
                 )}
               </div>
-              
-              <div>
-                <h3 className="font-semibold text-text-primary">
+
+              <div className="min-w-0">
+                <h3 className="font-semibold text-text-primary truncate">
                   {entry.hacker.name}
                 </h3>
-                <p className="text-sm text-text-secondary">
-                  {entry.hacker.bountiesCompleted} bounties completed
-                </p>
               </div>
             </div>
 
-            {/* Stats */}
-            <div className="flex items-center space-x-8">
-              <div className="text-right">
-                <p className="text-sm text-text-secondary">Score</p>
-                <p className="font-semibold text-text-primary">
-                  {entry.hacker.score.toLocaleString()}
-                </p>
-              </div>
-              <div className="text-right">
-                <p className="text-sm text-text-secondary">Earnings</p>
-                <p className="font-semibold text-text-primary">
-                  ${entry.hacker.totalEarnings.toLocaleString()}
-                </p>
-              </div>
+            {/* Score */}
+            <div className="col-span-2 text-right">
+              <span className="font-medium text-text-primary">
+                {entry.hacker.score.toLocaleString()}
+              </span>
+            </div>
+
+            {/* Bounties Completed */}
+            <div className="col-span-2 text-right">
+              <span className="font-medium text-text-primary">
+                {entry.hacker.bountiesCompleted}
+              </span>
+            </div>
+
+            {/* Total Earnings */}
+            <div className="col-span-3 text-right">
+              <span className="font-medium text-gradient">
+                ${entry.hacker.totalEarnings.toLocaleString()}
+              </span>
             </div>
           </div>
         ))}

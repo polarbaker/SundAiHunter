@@ -1,166 +1,144 @@
 'use client';
 
-import React from 'react';
-import { BountyType } from '@/types/bounty';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
+import {
+  ChartBarIcon,
+  CurrencyDollarIcon,
+  CheckCircleIcon,
+  ClockIcon,
+} from '@heroicons/react/24/outline';
 
-const mockActiveBounties: BountyType[] = [
-  {
-    id: '1',
-    title: 'Smart Contract Audit',
-    sponsorName: 'DeFi Protocol',
-    prize: 3000,
-    type: 'Remote Medium',
-    deadline: '2024-01-20',
-    status: 'Active',
-    category: 'Security',
-  },
-  {
-    id: '2',
-    title: 'Frontend Bug Fix',
-    sponsorName: 'Web3 Startup',
-    prize: 500,
-    type: 'Remote Small',
-    deadline: '2024-01-15',
-    status: 'Active',
-    category: 'Frontend',
-  },
-];
+export default function HackerDashboard() {
+  const [activeTab, setActiveTab] = useState('active');
 
-const mockCompletedBounties: BountyType[] = [
-  {
-    id: '3',
-    title: 'API Integration',
-    sponsorName: 'Crypto Exchange',
-    prize: 2000,
-    type: 'Remote Medium',
-    deadline: '2023-12-01',
-    status: 'Completed',
-    category: 'Backend',
-  },
-];
+  const stats = [
+    {
+      title: 'Total Earnings',
+      value: '$12,500',
+      change: '+25%',
+      icon: CurrencyDollarIcon,
+      color: 'emerald',
+    },
+    {
+      title: 'Active Bounties',
+      value: '8',
+      change: '+2',
+      icon: ChartBarIcon,
+      color: 'purple',
+    },
+    {
+      title: 'Completed',
+      value: '24',
+      change: '+5',
+      icon: CheckCircleIcon,
+      color: 'blue',
+    },
+    {
+      title: 'Time Spent',
+      value: '156h',
+      change: '+12h',
+      icon: ClockIcon,
+      color: 'amber',
+    },
+  ];
 
-const stats = {
-  totalEarnings: 15000,
-  completedBounties: 8,
-  successRate: 92,
-  averageRating: 4.8,
-};
+  const activeBounties = [
+    {
+      title: 'Implement Dark Mode',
+      reward: '$500',
+      progress: 75,
+      daysLeft: 3,
+      techStack: ['React', 'TypeScript', 'CSS'],
+    },
+    {
+      title: 'API Integration',
+      reward: '$750',
+      progress: 40,
+      daysLeft: 5,
+      techStack: ['Node.js', 'Express', 'JWT'],
+    },
+  ];
 
-export default function HackerDashboardPage() {
   return (
-    <main className="container mx-auto px-4 py-8">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-bold text-text-primary">Hacker Dashboard</h1>
-          <div className="text-right">
-            <p className="text-text-secondary">Wallet</p>
-            <p className="text-text-primary font-mono">0x1234...5678</p>
-          </div>
-        </div>
+    <div className="dashboard-container">
+      <header className="dashboard-header">
+        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary-light">
+          Hacker Dashboard
+        </h1>
+        <p className="text-text-secondary mt-2">
+          Track your bounty progress and earnings
+        </p>
+      </header>
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-background-secondary rounded-lg p-6">
-            <h3 className="text-text-secondary mb-2">Total Earnings</h3>
-            <p className="text-3xl font-bold text-text-primary">
-              ${stats.totalEarnings.toLocaleString()}
-            </p>
+      <div className="stats-grid">
+        {stats.map((stat) => (
+          <div key={stat.title} className="dashboard-stat-card">
+            <div className={`stat-icon-wrapper bg-${stat.color}-500/10`}>
+              <stat.icon className={`stat-icon text-${stat.color}-500`} />
+            </div>
+            <div className="stat-content">
+              <h3 className="stat-title">{stat.title}</h3>
+              <p className="dashboard-stat-value">{stat.value}</p>
+              <p className={`dashboard-stat-change ${stat.change.startsWith('+') ? 'positive' : 'negative'}`}>
+                {stat.change}
+              </p>
+            </div>
           </div>
-          
-          <div className="bg-background-secondary rounded-lg p-6">
-            <h3 className="text-text-secondary mb-2">Completed Bounties</h3>
-            <p className="text-3xl font-bold text-text-primary">
-              {stats.completedBounties}
-            </p>
-          </div>
-          
-          <div className="bg-background-secondary rounded-lg p-6">
-            <h3 className="text-text-secondary mb-2">Success Rate</h3>
-            <p className="text-3xl font-bold text-text-primary">
-              {stats.successRate}%
-            </p>
-          </div>
-          
-          <div className="bg-background-secondary rounded-lg p-6">
-            <h3 className="text-text-secondary mb-2">Average Rating</h3>
-            <p className="text-3xl font-bold text-text-primary">
-              {stats.averageRating}/5
-            </p>
-          </div>
-        </div>
-
-        {/* Active Bounties */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold text-text-primary mb-6">Active Bounties</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {mockActiveBounties.map(bounty => (
-              <div
-                key={bounty.id}
-                className="bg-background-secondary rounded-lg p-6 space-y-4"
-              >
-                <div className="flex justify-between items-start">
-                  <h3 className="text-xl font-semibold text-text-primary">{bounty.title}</h3>
-                  <span className="px-3 py-1 rounded-full text-sm bg-primary/10 text-primary">
-                    ${bounty.prize.toLocaleString()}
-                  </span>
-                </div>
-                
-                <div>
-                  <p className="text-text-secondary">Sponsored by {bounty.sponsorName}</p>
-                  <p className="text-sm text-text-secondary mt-1">
-                    Deadline: {new Date(bounty.deadline).toLocaleDateString()}
-                  </p>
-                </div>
-                
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 rounded-md text-sm bg-background text-text-secondary">
-                    {bounty.category}
-                  </span>
-                  <span className="px-2 py-1 rounded-md text-sm bg-background text-text-secondary">
-                    {bounty.type}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Completed Bounties */}
-        <section>
-          <h2 className="text-2xl font-bold text-text-primary mb-6">Completed Bounties</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {mockCompletedBounties.map(bounty => (
-              <div
-                key={bounty.id}
-                className="bg-background-secondary rounded-lg p-6 space-y-4"
-              >
-                <div className="flex justify-between items-start">
-                  <h3 className="text-xl font-semibold text-text-primary">{bounty.title}</h3>
-                  <span className="px-3 py-1 rounded-full text-sm bg-green-500/10 text-green-500">
-                    Completed
-                  </span>
-                </div>
-                
-                <div>
-                  <p className="text-text-secondary">Sponsored by {bounty.sponsorName}</p>
-                  <p className="text-text-primary font-semibold mt-1">
-                    Earned: ${bounty.prize.toLocaleString()}
-                  </p>
-                </div>
-                
-                <div className="flex flex-wrap gap-2">
-                  <span className="px-2 py-1 rounded-md text-sm bg-background text-text-secondary">
-                    {bounty.category}
-                  </span>
-                  <span className="px-2 py-1 rounded-md text-sm bg-background text-text-secondary">
-                    {bounty.type}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+        ))}
       </div>
-    </main>
+
+      <div className="dashboard-tabs">
+        <div className="tab-buttons">
+          {['active', 'completed', 'available'].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`dashboard-tab ${activeTab === tab ? 'active' : ''}`}
+            >
+              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              {activeTab === tab && (
+                <motion.div
+                  className="dashboard-tab-indicator"
+                  layoutId="tab-indicator"
+                />
+              )}
+            </button>
+          ))}
+        </div>
+
+        <div className="bounties-grid">
+          {activeBounties.map((bounty) => (
+            <div key={bounty.title} className="bounty-card">
+              <div className="bounty-header">
+                <h3 className="bounty-title">{bounty.title}</h3>
+                <span className="bounty-reward">{bounty.reward}</span>
+              </div>
+              
+              <div className="bounty-progress">
+                <div className="progress-stats">
+                  <span className="progress-text">{bounty.progress}% Complete</span>
+                  <span className="days-left">{bounty.daysLeft} days left</span>
+                </div>
+                <div className="dashboard-progress-bar">
+                  <div
+                    className="dashboard-progress-bar-fill"
+                    style={{ width: `${bounty.progress}%` }}
+                  />
+                </div>
+              </div>
+
+              <div className="tech-stack">
+                {bounty.techStack.map((tech) => (
+                  <span key={tech} className="tech-tag">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }

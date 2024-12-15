@@ -1,11 +1,13 @@
-import React from 'react'
 import './globals.css'
-import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
 import Navigation from '@/components/Navigation'
+import Footer from '@/components/Footer'
 
-export const metadata: Metadata = {
-  title: 'Sundai Club',
-  description: 'Connect with developers and fund open source projects',
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata = {
+  title: 'Sundai Bounties',
+  description: 'Web3 Bounty Platform',
 }
 
 export default function RootLayout({
@@ -14,11 +16,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <body className="flex min-h-full flex-col bg-background">
-        <Navigation />
-        <div className="flex-1">
-          {children}
+    <html lang="en">
+      <body className={inter.className}>
+        <div className="min-h-screen flex flex-col">
+          <Navigation />
+          <div className="flex-1 pt-24">
+            {children}
+          </div>
+          <Footer />
         </div>
       </body>
     </html>
