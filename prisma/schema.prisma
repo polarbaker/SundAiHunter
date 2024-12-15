@@ -3,11 +3,11 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Hacker {
   id            String    @id @default(cuid())
   name          String?
   email         String    @unique
@@ -29,6 +29,6 @@ model Bounty {
   category    String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  sponsor     User     @relation(fields: [sponsorId], references: [id])
+  sponsor     Hacker   @relation(fields: [sponsorId], references: [id])
   sponsorId   String
 }
