@@ -4,12 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate && npm run build:css",
-    "build:css": "tailwindcss -i ./src/styles/globals.css -o ./src/app/globals.css --minify",
-    "watch:css": "tailwindcss -i ./src/styles/globals.css -o ./src/app/globals.css --watch"
+    "seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.ts",
+    "postinstall": "prisma generate",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",
@@ -19,7 +19,7 @@
     "@types/next-auth": "^3.13.0",
     "firebase": "^10.4.0",
     "framer-motion": "^11.14.4",
-    "next": "13.5.4",
+    "next": "14.2.7",
     "next-auth": "^4.24.11",
     "openai": "^4.11.1",
     "react": "^18.2.0",
@@ -27,6 +27,7 @@
     "react-hook-form": "^7.47.0",
     "tailwindcss": "^3.3.3",
     "typescript": "^5.2.2",
+    "typewriter-effect": "^2.21.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -35,8 +36,11 @@
     "@types/react-dom": "^18.2.13",
     "autoprefixer": "^10.4.16",
     "eslint": "^8.51.0",
-    "eslint-config-next": "13.5.4",
+    "eslint-config-next": "14.2.7",
     "postcss": "^8.4.31",
-    "prisma": "^5.4.2"
+    "prisma": "^5.4.2",
+    "@tailwindcss/typography": "^0.5.10",
+    "tailwindcss-scrollbar": "^0.1.0",
+    "ts-node": "^10.9.2"
   }
 }
