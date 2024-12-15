@@ -1,144 +1,215 @@
 'use client';
 
-import { useState } from 'react';
 import { motion } from 'framer-motion';
-import {
-  ChartBarIcon,
+import { useState, useEffect } from 'react';
+import { 
+  ChartBarIcon, 
+  ClockIcon, 
   CurrencyDollarIcon,
+  FireIcon,
   CheckCircleIcon,
-  ClockIcon,
+  ArrowTrendingUpIcon
 } from '@heroicons/react/24/outline';
 
+interface DashboardStats {
+  totalEarnings: number;
+  activeBounties: number;
+  completedBounties: number;
+  successRate: number;
+}
+
+interface BountyActivity {
+  id: string;
+  title: string;
+  status: 'in_progress' | 'completed' | 'submitted';
+  reward: number;
+  daysLeft?: number;
+  progress: number;
+  priority: 'high' | 'medium' | 'low';
+}
+
 export default function HackerDashboard() {
-  const [activeTab, setActiveTab] = useState('active');
+  const [stats, setStats] = useState<DashboardStats>({
+    totalEarnings: 15420,
+    activeBounties: 3,
+    completedBounties: 12,
+    successRate: 92
+  });
 
-  const stats = [
+  const [recentActivity, setRecentActivity] = useState<BountyActivity[]>([
     {
-      title: 'Total Earnings',
-      value: '$12,500',
-      change: '+25%',
-      icon: CurrencyDollarIcon,
-      color: 'emerald',
-    },
-    {
-      title: 'Active Bounties',
-      value: '8',
-      change: '+2',
-      icon: ChartBarIcon,
-      color: 'purple',
-    },
-    {
-      title: 'Completed',
-      value: '24',
-      change: '+5',
-      icon: CheckCircleIcon,
-      color: 'blue',
-    },
-    {
-      title: 'Time Spent',
-      value: '156h',
-      change: '+12h',
-      icon: ClockIcon,
-      color: 'amber',
-    },
-  ];
-
-  const activeBounties = [
-    {
-      title: 'Implement Dark Mode',
-      reward: '$500',
-      progress: 75,
-      daysLeft: 3,
-      techStack: ['React', 'TypeScript', 'CSS'],
-    },
-    {
-      title: 'API Integration',
-      reward: '$750',
-      progress: 40,
+      id: '1',
+      title: 'Smart Contract Audit',
+      status: 'in_progress',
+      reward: 2500,
       daysLeft: 5,
-      techStack: ['Node.js', 'Express', 'JWT'],
+      progress: 75,
+      priority: 'high'
     },
-  ];
+    {
+      id: '2',
+      title: 'Frontend Security Review',
+      status: 'in_progress',
+      reward: 1800,
+      daysLeft: 3,
+      progress: 40,
+      priority: 'medium'
+    },
+    {
+      id: '3',
+      title: 'API Penetration Testing',
+      status: 'submitted',
+      reward: 3000,
+      progress: 100,
+      priority: 'high'
+    }
+  ]);
+
+  const containerAnimation = {
+    hidden: { opacity: 0, y: 20 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemAnimation = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  };
 
   return (
-    <div className="dashboard-container">
-      <header className="dashboard-header">
-        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary-light">
-          Hacker Dashboard
-        </h1>
-        <p className="text-text-secondary mt-2">
-          Track your bounty progress and earnings
-        </p>
-      </header>
+    <div className="min-h-screen bg-gradient-to-b from-background to-background-secondary p-6">
+      <motion.div
+        initial="hidden"
+        animate="show"
+        variants={containerAnimation}
+        className="max-w-7xl mx-auto space-y-8"
+      >
+        {/* Header Section */}
+        <motion.div variants={itemAnimation} className="flex justify-between items-center">
+          <div>
+            <h1 className="text-4xl font-bold text-white">Hacker Dashboard</h1>
+            <p className="text-gray-400 mt-2">Track your bounty progress and earnings</p>
+          </div>
+          <button className="bg-primary hover:bg-primary-light text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 flex items-center gap-2">
+            <FireIcon className="w-5 h-5" />
+            Find New Bounties
+          </button>
+        </motion.div>
 
-      <div className="stats-grid">
-        {stats.map((stat) => (
-          <div key={stat.title} className="dashboard-stat-card">
-            <div className={`stat-icon-wrapper bg-${stat.color}-500/10`}>
-              <stat.icon className={`stat-icon text-${stat.color}-500`} />
+        {/* Stats Grid */}
+        <motion.div 
+          variants={itemAnimation}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+        >
+          <div className="stat-card">
+            <div className="flex items-center justify-between">
+              <h3 className="text-gray-400">Total Earnings</h3>
+              <CurrencyDollarIcon className="w-8 h-8 text-primary" />
             </div>
-            <div className="stat-content">
-              <h3 className="stat-title">{stat.title}</h3>
-              <p className="dashboard-stat-value">{stat.value}</p>
-              <p className={`dashboard-stat-change ${stat.change.startsWith('+') ? 'positive' : 'negative'}`}>
-                {stat.change}
-              </p>
+            <p className="text-3xl font-bold mt-2">${stats.totalEarnings.toLocaleString()}</p>
+            <div className="mt-2 text-success text-sm flex items-center gap-1">
+              <ArrowTrendingUpIcon className="w-4 h-4" />
+              +12.5% from last month
             </div>
           </div>
-        ))}
-      </div>
 
-      <div className="dashboard-tabs">
-        <div className="tab-buttons">
-          {['active', 'completed', 'available'].map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`dashboard-tab ${activeTab === tab ? 'active' : ''}`}
-            >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
-              {activeTab === tab && (
-                <motion.div
-                  className="dashboard-tab-indicator"
-                  layoutId="tab-indicator"
-                />
-              )}
-            </button>
-          ))}
-        </div>
-
-        <div className="bounties-grid">
-          {activeBounties.map((bounty) => (
-            <div key={bounty.title} className="bounty-card">
-              <div className="bounty-header">
-                <h3 className="bounty-title">{bounty.title}</h3>
-                <span className="bounty-reward">{bounty.reward}</span>
-              </div>
-              
-              <div className="bounty-progress">
-                <div className="progress-stats">
-                  <span className="progress-text">{bounty.progress}% Complete</span>
-                  <span className="days-left">{bounty.daysLeft} days left</span>
-                </div>
-                <div className="dashboard-progress-bar">
-                  <div
-                    className="dashboard-progress-bar-fill"
-                    style={{ width: `${bounty.progress}%` }}
-                  />
-                </div>
-              </div>
-
-              <div className="tech-stack">
-                {bounty.techStack.map((tech) => (
-                  <span key={tech} className="tech-tag">
-                    {tech}
-                  </span>
-                ))}
-              </div>
+          <div className="stat-card">
+            <div className="flex items-center justify-between">
+              <h3 className="text-gray-400">Active Bounties</h3>
+              <ClockIcon className="w-8 h-8 text-primary" />
             </div>
-          ))}
-        </div>
-      </div>
+            <p className="text-3xl font-bold mt-2">{stats.activeBounties}</p>
+            <div className="mt-2 text-gray-400 text-sm">
+              {stats.activeBounties} in progress
+            </div>
+          </div>
+
+          <div className="stat-card">
+            <div className="flex items-center justify-between">
+              <h3 className="text-gray-400">Completed</h3>
+              <CheckCircleIcon className="w-8 h-8 text-primary" />
+            </div>
+            <p className="text-3xl font-bold mt-2">{stats.completedBounties}</p>
+            <div className="mt-2 text-gray-400 text-sm">
+              Total completed bounties
+            </div>
+          </div>
+
+          <div className="stat-card">
+            <div className="flex items-center justify-between">
+              <h3 className="text-gray-400">Success Rate</h3>
+              <ChartBarIcon className="w-8 h-8 text-primary" />
+            </div>
+            <p className="text-3xl font-bold mt-2">{stats.successRate}%</p>
+            <div className="mt-2 text-success text-sm">
+              Above average performance
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Active Bounties Section */}
+        <motion.div variants={itemAnimation} className="space-y-6">
+          <h2 className="text-2xl font-bold text-white">Active Bounties</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {recentActivity.map((bounty) => (
+              <motion.div
+                key={bounty.id}
+                className="bounty-card"
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <h3 className="text-xl font-semibold text-white">{bounty.title}</h3>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className={`priority-badge ${bounty.priority}`}>
+                        {bounty.priority.charAt(0).toUpperCase() + bounty.priority.slice(1)} Priority
+                      </span>
+                      {bounty.daysLeft && (
+                        <span className="text-sm text-gray-400">
+                          {bounty.daysLeft} days left
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xl font-bold text-primary">${bounty.reward}</p>
+                    <p className="text-sm text-gray-400">Reward</p>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm text-gray-400">
+                    <span>Progress</span>
+                    <span>{bounty.progress}%</span>
+                  </div>
+                  <div className="progress-bar">
+                    <div 
+                      className="h-full bg-primary rounded-full transition-all duration-500"
+                      style={{ width: `${bounty.progress}%` }}
+                    />
+                  </div>
+                </div>
+
+                <div className="mt-4 flex justify-between items-center">
+                  <span className={`status-badge ${bounty.status}`}>
+                    {bounty.status.split('_').join(' ').charAt(0).toUpperCase() + 
+                     bounty.status.split('_').join(' ').slice(1)}
+                  </span>
+                  <button className="text-primary hover:text-primary-light transition-colors">
+                    View Details →
+                  </button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }

@@ -439,6 +439,83 @@
     box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
   }
 
+  /* Dashboard Components */
+  .stat-card {
+    @apply bg-background-secondary rounded-xl p-6 border border-border/20 backdrop-blur-sm;
+    background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.02)
+    );
+    transition: all 0.3s ease;
+  }
+
+  .stat-card:hover {
+    @apply border-primary/30;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .bounty-card {
+    @apply bg-background-secondary rounded-xl p-6 border border-border/20;
+    background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.02)
+    );
+    transition: all 0.3s ease;
+  }
+
+  .bounty-card:hover {
+    @apply border-primary/30;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Status Badges */
+  .status-badge {
+    @apply px-3 py-1 text-sm rounded-full;
+  }
+
+  .status-badge.in_progress {
+    @apply bg-warning/10 text-warning;
+  }
+
+  .status-badge.completed {
+    @apply bg-success/10 text-success;
+  }
+
+  .status-badge.submitted {
+    @apply bg-primary/10 text-primary;
+  }
+
+  /* Priority Badges */
+  .priority-badge {
+    @apply px-2 py-1 text-xs rounded-full font-medium;
+  }
+
+  .priority-badge.high {
+    @apply bg-error/10 text-error;
+  }
+
+  .priority-badge.medium {
+    @apply bg-warning/10 text-warning;
+  }
+
+  .priority-badge.low {
+    @apply bg-success/10 text-success;
+  }
+
+  /* Progress Bar */
+  .progress-bar {
+    @apply w-full h-2 bg-background rounded-full overflow-hidden;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  .progress-bar > div {
+    @apply transition-all duration-500;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  }
+
   /* Animation Classes */
   @keyframes pulse {
     0%, 100% { transform: scale(1); }
@@ -497,6 +574,200 @@
   .apply-button {
     @apply px-4 py-2 bg-primary hover:bg-primary-light text-white rounded-lg
     transition-all duration-200 font-medium;
+  }
+
+  /* Enhanced Dashboard Styles */
+  .dashboard-container {
+    @apply max-w-7xl mx-auto p-6 space-y-10;
+    background: radial-gradient(
+      circle at top right,
+      rgba(139, 92, 246, 0.05),
+      transparent 60%
+    );
+  }
+
+  /* Priority Badges */
+  .priority-badge {
+    @apply text-xs font-medium px-2 py-1 rounded-full ml-2;
+  }
+
+  .priority-badge.high {
+    @apply bg-error/10 text-error;
+  }
+
+  .priority-badge.medium {
+    @apply bg-warning/10 text-warning;
+  }
+
+  .priority-badge.low {
+    @apply bg-success/10 text-success;
+  }
+
+  /* Difficulty Badges */
+  .difficulty-badge {
+    @apply text-xs font-medium px-3 py-1 rounded-full;
+  }
+
+  .difficulty-badge.easy {
+    @apply bg-success/10 text-success;
+  }
+
+  .difficulty-badge.medium {
+    @apply bg-warning/10 text-warning;
+  }
+
+  .difficulty-badge.hard {
+    @apply bg-error/10 text-error;
+  }
+
+  /* Activity Indicator */
+  .activity-indicator {
+    @apply mt-4 pt-4 border-t border-border/40;
+  }
+
+  /* Completed Info */
+  .completed-info {
+    @apply mt-4 space-y-2;
+  }
+
+  /* Available Info */
+  .available-info {
+    @apply mt-4 space-y-3;
+  }
+
+  /* Enhanced Card Animations */
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slide-in {
+    animation: slideIn 0.3s ease-out forwards;
+  }
+
+  /* Enhanced Progress Bar */
+  .progress-bar {
+    @apply w-full h-2 rounded-full overflow-hidden bg-background-tertiary relative;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+  }
+
+  .progress-bar::after {
+    content: '';
+    @apply absolute inset-0 opacity-50;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent
+    );
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* Enhanced Tab Transitions */
+  .tab-content-enter {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  .tab-content-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 300ms, transform 300ms;
+  }
+
+  .tab-content-exit {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .tab-content-exit-active {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 300ms, transform 300ms;
+  }
+
+  /* Enhanced Hover Effects */
+  .bounty-card {
+    @apply relative overflow-hidden;
+  }
+
+  .bounty-card::before {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+    background: radial-gradient(
+      circle at center,
+      rgba(139, 92, 246, 0.1),
+      transparent 70%
+    );
+  }
+
+  .bounty-card:hover::before {
+    @apply opacity-100;
+  }
+
+  /* Enhanced Stats Animation */
+  .stat-value-increase {
+    animation: valueIncrease 0.5s ease-out forwards;
+  }
+
+  @keyframes valueIncrease {
+    0% {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  /* Tech Stack Tags Enhancement */
+  .tech-stack {
+    @apply flex flex-wrap gap-2 mt-4;
+  }
+
+  .tech-tag {
+    @apply px-3 py-1 text-sm rounded-full transition-all duration-200;
+    background: linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.08),
+      rgba(255, 255, 255, 0.03)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .tech-tag:hover {
+    @apply transform -translate-y-0.5;
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.3);
+  }
+
+  /* Loading States */
+  .loading-shimmer {
+    @apply relative overflow-hidden bg-background-secondary;
+  }
+
+  .loading-shimmer::after {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.05),
+      transparent
+    );
+    animation: shimmer 2s infinite;
   }
 }
 
