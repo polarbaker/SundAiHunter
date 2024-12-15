@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate && npm run build:css",
+    "build:css": "tailwindcss -i ./src/styles/globals.css -o ./src/app/globals.css --minify",
+    "watch:css": "tailwindcss -i ./src/styles/globals.css -o ./src/app/globals.css --watch"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",
