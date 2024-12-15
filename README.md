@@ -12,6 +12,10 @@ First, start the PostgreSQL database using Docker:
 ```bash
 # Start the database
 docker-compose up -d
+# setup db schema
+pnpm migrate
+# seed db 
+pnpm seed 
 
 # To stop the database
 docker-compose down
