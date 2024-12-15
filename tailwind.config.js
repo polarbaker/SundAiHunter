@@ -8,23 +8,38 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
+        background: {
+          DEFAULT: '#0F1218',
+          secondary: '#151922',
         },
+        primary: {
+          DEFAULT: '#8B5CF6',
+          hover: '#7C3AED',
+        },
+        accent: {
+          purple: '#8B5CF6',
+          pink: '#EC4899',
+        },
+        text: {
+          primary: '#FFFFFF',
+          secondary: '#94A3B8',
+        }
+      },
+      maxWidth: {
+        'screen-xl': '1280px',
       },
       fontFamily: {
-        sans: ['var(--font-inter)'],
+        sans: [
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Segoe UI',
+          'Roboto',
+          'Helvetica Neue',
+          'Arial',
+          'sans-serif',
+        ],
       },
     },
   },
   plugins: [],
-} 
+}
