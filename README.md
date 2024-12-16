@@ -1,51 +1,68 @@
-# SundAiHunter
+# SundaiBounties 🎯
 
-# Bounty Hunting Platform for Hackers of [Sundai.Club](https://Sundai.Club)
+A modern, decentralized bug bounty platform connecting security researchers with Web3 projects. Built with Next.js 14, TypeScript, and Tailwind CSS.
 
-# Start the database
-## Getting Started
+## 🚀 Features
 
-### 1. Start the Database
+- **Smart Contract Integration**: Secure, automated payments using blockchain technology
+- **Modern Dashboard**: Real-time tracking of bounty progress and earnings
+- **Web3 Authentication**: Seamless wallet connection and authentication
+- **Responsive Design**: Beautiful, mobile-first interface with smooth animations
+- **Priority System**: Intelligent bounty prioritization and status tracking
+- **Real-time Updates**: Live notifications and status changes for bounty submissions
 
-First, start the PostgreSQL database using Docker:
+## 🛠️ Tech Stack
 
-```bash
-# Start the database
-docker-compose up -d
-# setup db schema
-pnpm migrate
-# seed db 
-pnpm seed 
+- **Frontend**: Next.js 14, React 18, TypeScript
+- **Styling**: Tailwind CSS, Framer Motion
+- **Authentication**: Web3 wallet integration
+- **State Management**: React Context + Hooks
+- **Database**: Prisma with PostgreSQL
+- **Blockchain**: Ethereum Smart Contracts
 
-# To stop the database
-docker-compose down
+## 🔧 Getting Started
 
-# To view database logs
-docker-compose logs -f postgres
-```
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   pnpm install
+   ```
+3. Set up environment variables:
+   ```bash
+   cp .env.example .env.local
+   ```
+4. Run the development server:
+   ```bash
+   pnpm dev
+   ```
 
-The database will be available at:
+## 🌐 Architecture
 
-- Host: localhost
-- Port: 5432
-- User: postgres
-- Password: postgres
-- Database: sundai_db
+- **App Router**: Leverages Next.js 14's app directory structure
+- **Server Components**: Optimized performance with React Server Components
+- **API Routes**: RESTful API endpoints for bounty management
+- **Smart Contracts**: Secure payment and verification system
 
-### 2. Run the Development Server
+## 🔐 Security
 
-```bash
-# Install dependencies
-npm install
+- Secure wallet authentication
+- Input validation and sanitization
+- Rate limiting and DDoS protection
+- Smart contract auditing capabilities
 
-# Run database migrations
-npx prisma migrate dev
+## 🤝 Contributing
 
-# Seed the database (optional)
-npx prisma db seed
+Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
 
-# Start the development server
-npm run dev
-```
+## 📄 License
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- The Web3 community for continuous support and feedback
+- All contributors who have helped shape this platform
+
+---
+
+Built with ❤️ for the Web3 security community
