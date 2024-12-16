@@ -1,4 +1,4 @@
-# SundAiHunter
+# FUTURE SITE TEMPLATE
 
 # Bounty Hunting Platform for Hackers of [Sundai.Club](https://Sundai.Club)
 
