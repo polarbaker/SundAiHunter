@@ -6,6 +6,7 @@ import Navigation from '@/components/Navigation'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 import SubmitBountyModal from '@/components/SubmitBountyModal'
 import { useState } from 'react';
+import { ModalProvider } from '@/contexts/ModalContext'
 
 // Font configurations
 const spaceMono = Space_Mono({
@@ -29,22 +30,19 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const [submitModalOpen, setSubmitModalOpen] = useState(false);
-
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${spaceMono.variable} ${firaCode.variable} ${montserrat.variable}`}>
         <ThemeProvider>
-          <div className="min-h-screen flex flex-col bg-background text-text-primary">
-            <Navigation setSubmitModalOpen={setSubmitModalOpen} />
-            <main className="flex-1 pt-16">
-              {children}
-            </main>
-            <SubmitBountyModal 
-              isOpen={submitModalOpen}
-              onClose={() => setSubmitModalOpen(false)}
-            />
-          </div>
+          <ModalProvider>
+            <div className="min-h-screen flex flex-col bg-background text-text-primary">
+              <Navigation />
+              <main className="flex-1 pt-16">
+                {children}
+              </main>
+              <SubmitBountyModal />
+            </div>
+          </ModalProvider>
         </ThemeProvider>
       </body>
     </html>

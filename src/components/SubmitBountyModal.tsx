@@ -5,6 +5,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon, CalendarIcon, CurrencyDollarIcon, DocumentTextIcon, ChatBubbleLeftIcon, GlobeAltIcon, WrenchIcon, LightBulbIcon } from '@heroicons/react/24/outline';
 import { useTheme } from '@/contexts/ThemeContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useModal } from '@/contexts/ModalContext';
 
 const categories = ['Security', 'Frontend', 'Backend', 'Smart Contracts', 'Design'];
 const types = ['Remote Small', 'Remote Medium', 'Remote Large', 'On-site'];
@@ -70,12 +71,8 @@ const itemVariants = {
   }
 };
 
-interface SubmitBountyModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export default function SubmitBountyModal({ isOpen, onClose }: SubmitBountyModalProps) {
+export default function SubmitBountyModal() {
+  const { submitModalOpen, setSubmitModalOpen } = useModal();
   const { isDarkMode } = useTheme();
   const [step, setStep] = useState(1);
   const [selectedTemplate, setSelectedTemplate] = useState('');
@@ -107,7 +104,7 @@ export default function SubmitBountyModal({ isOpen, onClose }: SubmitBountyModal
   };
 
   const handleClose = () => {
-    onClose();
+    setSubmitModalOpen(false);
     setTimeout(() => {
       setStep(1);
       setSelectedTemplate('');
@@ -126,7 +123,7 @@ export default function SubmitBountyModal({ isOpen, onClose }: SubmitBountyModal
   const labelClasses = `block text-gray-300 text-sm font-medium mb-2`;
 
   return (
-    <Transition appear show={isOpen} as={Fragment}>
+    <Transition appear show={submitModalOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={handleClose}>
         <Transition.Child
           as={Fragment}

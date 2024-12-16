@@ -9,6 +9,7 @@ import { usePullToRefresh } from "@/hooks/usePullToRefresh";
 import { useTheme } from "@/contexts/ThemeContext";
 import { BountyType } from '@/app/bounty-board/page';
 import Leaderboard from '@/components/Leaderboard';
+import { useModal } from '@/contexts/ModalContext';
 
 // Constants
 const featuredBounties: BountyType[] = [
@@ -98,7 +99,7 @@ const BackgroundPattern = () => (
 export default function Home() {
   const [isTypingDone, setIsTypingDone] = useState(false);
   const { isDarkMode } = useTheme();
-  const [submitModalOpen, setSubmitModalOpen] = useState(false);
+  const { setSubmitModalOpen } = useModal();
 
   usePullToRefresh();
 
@@ -209,7 +210,7 @@ export default function Home() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setSubmitModalOpen(true)}
-                className="px-8 py-3 rounded-lg bg-primary text-white font-medium text-lg hover:bg-primary-hover transition-colors"
+                className="px-8 py-3 rounded-lg bg-primary text-white font-medium text-lg hover:bg-primary-hover transition-colors w-full sm:w-auto"
               >
                 Submit a Bounty
               </motion.button>
@@ -217,7 +218,7 @@ export default function Home() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className={`px-8 py-3 rounded-lg font-medium text-lg border-2 ${
+                  className={`px-8 py-3 rounded-lg font-medium text-lg border-2 w-full sm:w-auto ${
                     isDarkMode 
                       ? "border-gray-700 text-gray-300 hover:bg-gray-800" 
                       : "border-gray-300 text-gray-700 hover:bg-gray-100"

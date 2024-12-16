@@ -7,16 +7,14 @@ import Image from 'next/image'
 import { useTheme } from '@/contexts/ThemeContext'
 import { motion } from 'framer-motion'
 import { SunIcon, MoonIcon } from '@heroicons/react/24/outline'
+import { useModal } from '@/contexts/ModalContext'
 
-interface NavigationProps {
-  setSubmitModalOpen: (open: boolean) => void;
-}
-
-const Navigation = ({ setSubmitModalOpen }: NavigationProps) => {
+const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const pathname = usePathname()
   const { isDarkMode, toggleTheme } = useTheme()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { setSubmitModalOpen } = useModal()
 
   useEffect(() => {
     const handleScroll = () => {
