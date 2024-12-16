@@ -1,7 +1,6 @@
 import './globals.css'
 import { Space_Mono, Fira_Code, Montserrat } from 'next/font/google'
 import Navigation from '@/components/Navigation'
-import Footer from '@/components/Footer'
 import { ThemeProvider } from '@/contexts/ThemeContext'
 
 // Font configurations
@@ -27,12 +26,12 @@ export const metadata = {
   icons: {
     icon: [
       {
-        url: '/icon-192x192.png',
+        url: '/images/icon-192x192.png',
         sizes: '192x192',
         type: 'image/png',
       },
       {
-        url: '/icon-512x512.png',
+        url: '/images/icon-512x512.png',
         sizes: '512x512',
         type: 'image/png',
       },
@@ -61,15 +60,13 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className={`${spaceMono.variable} ${firaCode.variable} ${montserrat.variable}`}>
         <ThemeProvider>
           <div className="min-h-screen flex flex-col bg-background text-text-primary">
             <Navigation />
-            <main className="flex-1">
+            <main className="flex-1 pt-16">
               {children}
             </main>
           </div>

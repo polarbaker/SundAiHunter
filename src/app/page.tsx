@@ -116,7 +116,7 @@ export default function Home() {
                   transition={{ delay: 0.2 }}
                 >
                   <Image
-                    src="/affiliations/mit_logo_std_rgb_silver-gray.svg"
+                    src="/images/affiliations/mit_logo_std_rgb_silver-gray.svg"
                     style={{ filter: "brightness(1.2)" }}
                     className="w-16 h-16 sm:w-24 sm:h-24 opacity-90"
                     alt="Logo MIT"
@@ -149,7 +149,7 @@ export default function Home() {
                   transition={{ delay: 0.4 }}
                 >
                   <Image
-                    src="/affiliations/harvard-university-seeklogo.svg"
+                    src="/images/affiliations/harvard-university-seeklogo.svg"
                     className="w-14 h-14 sm:w-20 sm:h-20 opacity-90"
                     style={{ filter: "grayscale(100%)" }}
                     alt="Logo Harvard"
