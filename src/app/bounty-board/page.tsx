@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { MagnifyingGlassIcon, FunnelIcon, ArrowsUpDownIcon } from '@heroicons/react/24/outline'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { useTheme } from '@/contexts/ThemeContext'
 
 export interface BountyType {
   id: string;
@@ -296,7 +297,24 @@ const SearchAndFilters = ({
   );
 };
 
+// Add BackgroundPattern component
+const BackgroundPattern = () => (
+  <div
+    className="absolute inset-0 opacity-50"
+    style={{
+      backgroundImage: "url('/images/background_sundai.svg')",
+      backgroundSize: "300px auto",
+      backgroundRepeat: "repeat",
+      WebkitMaskImage: "linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)",
+      maskImage: "linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)",
+      transform: "rotate(0deg)",
+      pointerEvents: "none"
+    }}
+  />
+);
+
 export default function BountyBoardPage() {
+  const { isDarkMode } = useTheme();
   const [sortBy, setSortBy] = useState('latest')
   const [filterOpen, setFilterOpen] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -336,7 +354,13 @@ export default function BountyBoardPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className={`min-h-screen relative ${
+      isDarkMode
+        ? "bg-gradient-to-b from-gray-900 to-black text-gray-100"
+        : "bg-gradient-to-b from-[#E5E5E5] to-[#F0F0F0] text-gray-800"
+    }`}>
+      <BackgroundPattern />
+      
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">

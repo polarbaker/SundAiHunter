@@ -1,7 +1,11 @@
+'use client';
+
 import './globals.css'
 import { Space_Mono, Fira_Code, Montserrat } from 'next/font/google'
 import Navigation from '@/components/Navigation'
 import { ThemeProvider } from '@/contexts/ThemeContext'
+import SubmitBountyModal from '@/components/SubmitBountyModal'
+import { useState } from 'react';
 
 // Font configurations
 const spaceMono = Space_Mono({
@@ -20,55 +24,26 @@ const montserrat = Montserrat({
   variable: '--font-montserrat',
 })
 
-export const metadata = {
-  title: 'Sundai Club',
-  description: 'Building & Launching AI Prototypes Every Sunday',
-  icons: {
-    icon: [
-      {
-        url: '/images/icon-192x192.png',
-        sizes: '192x192',
-        type: 'image/png',
-      },
-      {
-        url: '/images/icon-512x512.png',
-        sizes: '512x512',
-        type: 'image/png',
-      },
-    ],
-    shortcut: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
-  },
-  manifest: '/manifest.json',
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#0F1218' },
-  ],
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-  },
-}
-
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const [submitModalOpen, setSubmitModalOpen] = useState(false);
+
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="manifest" href="/manifest.json" />
-      </head>
       <body className={`${spaceMono.variable} ${firaCode.variable} ${montserrat.variable}`}>
         <ThemeProvider>
           <div className="min-h-screen flex flex-col bg-background text-text-primary">
-            <Navigation />
+            <Navigation setSubmitModalOpen={setSubmitModalOpen} />
             <main className="flex-1 pt-16">
               {children}
             </main>
+            <SubmitBountyModal 
+              isOpen={submitModalOpen}
+              onClose={() => setSubmitModalOpen(false)}
+            />
           </div>
         </ThemeProvider>
       </body>

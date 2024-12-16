@@ -5,11 +5,17 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import Image from 'next/image'
 import { useTheme } from '@/contexts/ThemeContext'
+import { motion } from 'framer-motion'
+import { SunIcon, MoonIcon } from '@heroicons/react/24/outline'
 
-const Navigation = () => {
+interface NavigationProps {
+  setSubmitModalOpen: (open: boolean) => void;
+}
+
+const Navigation = ({ setSubmitModalOpen }: NavigationProps) => {
   const [isScrolled, setIsScrolled] = useState(false)
   const pathname = usePathname()
-  const { isDarkMode } = useTheme()
+  const { isDarkMode, toggleTheme } = useTheme()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   useEffect(() => {
@@ -26,9 +32,9 @@ const Navigation = () => {
   }, [])
 
   const navItems = [
-    { href: '/', label: 'Home' },
-    { href: '/bounty-board', label: 'Bounties' },
-    { href: '/hacker-dashboard', label: 'Dashboard' },
+    { name: 'Home', href: '/' },
+    { name: 'Bounty Board', href: '/bounty-board' },
+    { name: 'Leaderboard', href: '/leaderboard' },
   ]
 
   return (
@@ -67,7 +73,7 @@ const Navigation = () => {
             <div className="hidden md:flex items-center space-x-4">
               {navItems.map((item) => (
                 <Link
-                  key={item.href}
+                  key={item.name}
                   href={item.href}
                   className={`px-4 py-2 rounded-lg transition-colors ${
                     pathname === item.href
@@ -76,13 +82,13 @@ const Navigation = () => {
                   }`}
                 >
                   <span className="text-sm font-fira-code">
-                    {item.label}
+                    {item.name}
                   </span>
                 </Link>
               ))}
 
-              <Link
-                href="/submit-bounty"
+              <button
+                onClick={() => setSubmitModalOpen(true)}
                 className={`px-4 py-2 rounded-lg ${
                   isDarkMode
                     ? "bg-indigo-700 hover:bg-indigo-600"
@@ -92,7 +98,7 @@ const Navigation = () => {
                 <span className="text-sm font-fira-code">
                   Submit Bounty
                 </span>
-              </Link>
+              </button>
             </div>
 
             {/* Mobile Menu Button */}
@@ -113,7 +119,7 @@ const Navigation = () => {
           <div className={`md:hidden ${isMenuOpen ? 'block' : 'hidden'} py-4`}>
             {navItems.map((item) => (
               <Link
-                key={item.href}
+                key={item.name}
                 href={item.href}
                 className={`block px-4 py-2 rounded-lg ${
                   pathname === item.href
@@ -123,13 +129,13 @@ const Navigation = () => {
                 onClick={() => setIsMenuOpen(false)}
               >
                 <span className="text-sm font-fira-code">
-                  {item.label}
+                  {item.name}
                 </span>
               </Link>
             ))}
             
-            <Link
-              href="/submit-bounty"
+            <button
+              onClick={() => setSubmitModalOpen(true)}
               className={`block px-4 py-2 mt-2 rounded-lg text-center ${
                 isDarkMode
                   ? "bg-indigo-700 hover:bg-indigo-600"
@@ -140,7 +146,7 @@ const Navigation = () => {
               <span className="text-sm font-fira-code">
                 Submit Bounty
               </span>
-            </Link>
+            </button>
           </div>
         </div>
       </nav>
