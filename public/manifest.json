@@ -1,11 +1,11 @@
 {
-  "name": "Sundai",
+  "name": "Sundai Club",
   "short_name": "Sundai",
   "description": "Building & Launching AI Prototypes Every Sunday",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
+  "background_color": "#0F1218",
+  "theme_color": "#0F1218",
   "icons": [
     {
       "src": "/icon-192x192.png",
