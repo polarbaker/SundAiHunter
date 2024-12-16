@@ -5,89 +5,200 @@ import { MagnifyingGlassIcon, FunnelIcon, ArrowsUpDownIcon } from '@heroicons/re
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 
-const mockBounties: BountyType[] = [
+export interface BountyType {
+  id: string;
+  title: string;
+  sponsorName: string;
+  prize: number;
+  type: string;
+  deadline: string;
+  status: string;
+  category: string;
+  description: string;
+  image: string;
+}
+
+export const mockBounties: BountyType[] = [
   {
     id: '1',
     title: 'Smart Contract Security Audit',
+    description: 'Comprehensive security audit for DeFi protocol smart contracts including vulnerability assessment and optimization recommendations.',
     sponsorName: 'DeFi Protocol',
     prize: 5000,
     type: 'Remote Large',
     deadline: '2024-01-15',
     status: 'Active',
     category: 'Security',
+    image: '/images/default_project_thumbnail_dark.svg'
   },
   {
     id: '2',
-    title: 'Frontend Bug Fix',
+    title: 'Frontend Bug Fix Campaign',
+    description: 'Help identify and fix critical UI/UX issues in our decentralized exchange interface.',
     sponsorName: 'Web3 Startup',
     prize: 500,
     type: 'Remote Small',
     deadline: '2024-01-10',
     status: 'Active',
     category: 'Frontend',
+    image: '/images/default_project_thumbnail_dark.svg'
   },
   {
     id: '3',
-    title: 'API Integration',
+    title: 'Cross-chain Bridge Integration',
+    description: 'Implement and test cross-chain bridge functionality for major blockchain networks.',
     sponsorName: 'Crypto Exchange',
     prize: 2000,
     type: 'Remote Medium',
     deadline: '2024-01-20',
     status: 'Active',
     category: 'Backend',
+    image: '/images/default_project_thumbnail_dark.svg'
   },
+  {
+    id: '4',
+    title: 'NFT Marketplace Development',
+    description: 'Build a next-gen NFT marketplace with advanced trading features and social elements.',
+    sponsorName: 'NFT Platform',
+    prize: 7500,
+    type: 'Remote Large',
+    deadline: '2024-02-28',
+    status: 'Active',
+    category: 'Smart Contracts',
+    image: '/images/default_project_thumbnail_dark.svg'
+  },
+  {
+    id: '5',
+    title: 'DeFi Dashboard Design',
+    description: 'Create an intuitive and responsive design for our DeFi portfolio tracking dashboard.',
+    sponsorName: 'DeFi Wallet',
+    prize: 3000,
+    type: 'Remote Medium',
+    deadline: '2024-02-15',
+    status: 'Active',
+    category: 'Design',
+    image: '/images/default_project_thumbnail_dark.svg'
+  },
+  {
+    id: '6',
+    title: 'Zero-Knowledge Proof Implementation',
+    description: 'Implement and optimize ZK-proof protocols for our privacy-focused transaction system.',
+    sponsorName: 'Privacy Protocol',
+    prize: 8500,
+    type: 'Remote Large',
+    deadline: '2024-03-01',
+    status: 'Active',
+    category: 'Security',
+    image: '/images/default_project_thumbnail_dark.svg'
+  },
+  {
+    id: '7',
+    title: 'Wallet Extension Development',
+    description: 'Create a browser extension wallet with support for multiple chains and NFT viewing.',
+    sponsorName: 'Chain Solutions',
+    prize: 6000,
+    type: 'Remote Medium',
+    deadline: '2024-02-20',
+    status: 'Active',
+    category: 'Frontend',
+    image: '/images/default_project_thumbnail_dark.svg'
+  },
+  {
+    id: '8',
+    title: 'DAO Governance Dashboard',
+    description: 'Build an intuitive dashboard for DAO proposal creation, voting, and analytics.',
+    sponsorName: 'DAO Framework',
+    prize: 4500,
+    type: 'Remote Medium',
+    deadline: '2024-03-15',
+    status: 'Active',
+    category: 'Frontend',
+    image: '/images/default_project_thumbnail_dark.svg'
+  },
+  {
+    id: '9',
+    title: 'Layer 2 Scaling Solution',
+    description: 'Optimize and enhance our L2 rollup implementation for better throughput.',
+    sponsorName: 'Scaling Labs',
+    prize: 12000,
+    type: 'Remote Large',
+    deadline: '2024-04-01',
+    status: 'Active',
+    category: 'Backend',
+    image: '/images/default_project_thumbnail_dark.svg'
+  },
+  {
+    id: '10',
+    title: 'DeFi Analytics Platform',
+    description: 'Create a comprehensive analytics platform for tracking DeFi metrics across protocols.',
+    sponsorName: 'DeFi Metrics',
+    prize: 5500,
+    type: 'Remote Medium',
+    deadline: '2024-03-10',
+    status: 'Active',
+    category: 'Backend',
+    image: '/images/default_project_thumbnail_dark.svg'
+  },
+  {
+    id: '11',
+    title: 'Tokenomics Visualization Tool',
+    description: 'Design and implement an interactive tool for modeling and visualizing token economics.',
+    sponsorName: 'Token Labs',
+    prize: 3500,
+    type: 'Remote Small',
+    deadline: '2024-02-25',
+    status: 'Active',
+    category: 'Design',
+    image: '/images/default_project_thumbnail_dark.svg'
+  }
 ];
 
 const categories = ['All', 'Security', 'Frontend', 'Backend', 'Smart Contracts', 'Design'];
 const types = ['All', 'Remote Small', 'Remote Medium', 'Remote Large', 'On-site'];
 
 // Enhanced BountyCard component with more animations and features
-const BountyCard = ({ bounty }: { bounty: any }) => {
+const BountyCard = ({ bounty }: { bounty: BountyType }) => {
   return (
-    <motion.div
-      className="bounty-card group cursor-pointer"
-      whileHover={{ scale: 1.02 }}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-    >
-      <div className="flex justify-between items-start mb-4">
-        <div>
-          <h3 className="text-xl font-semibold mb-2 group-hover:text-gradient transition-colors">
-            {bounty.title}
-          </h3>
-          <p className="text-text-secondary text-sm mb-3">{bounty.description}</p>
+    <Link href={`/bounty/${bounty.id}`}>
+      <motion.div
+        className="relative group cursor-pointer overflow-hidden rounded-lg"
+        whileHover={{ scale: 1.02 }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+      >
+        <div className="relative aspect-square">
+          <img 
+            src={bounty.image}
+            alt={bounty.title}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+          
+          <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-sm font-medium px-2 py-1 rounded-full bg-primary/80">
+                {bounty.category}
+              </span>
+              <span className="text-lg font-bold">
+                ${bounty.prize.toLocaleString()}
+              </span>
+            </div>
+            <h3 className="text-lg font-semibold mb-1">{bounty.title}</h3>
+            <p className="text-sm text-gray-200 line-clamp-2">{bounty.description}</p>
+          </div>
         </div>
-        <div className="flex items-center space-x-2">
-          <span className="text-primary font-semibold">${bounty.prize}</span>
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            className="btn btn-sm btn-primary"
-          >
-            Apply
-          </motion.button>
-        </div>
-      </div>
-      <div className="flex flex-wrap gap-2">
-        {bounty.tags?.map((tag: string, index: number) => (
-          <span
-            key={index}
-            className="px-2 py-1 text-xs rounded-full bg-background/50 border border-border/40 text-text-secondary"
-          >
-            {tag}
+
+        <div className="absolute top-0 left-0 right-0 p-3 flex justify-between items-center">
+          <span className="text-sm text-white bg-black/50 px-2 py-1 rounded-full">
+            {bounty.type}
           </span>
-        ))}
-      </div>
-      <div className="mt-4 pt-4 border-t border-border/40 flex justify-between items-center text-sm text-text-secondary">
-        <div className="flex items-center space-x-2">
-          <span>Posted by {bounty.sponsorName}</span>
+          <span className="text-sm text-white bg-black/50 px-2 py-1 rounded-full">
+            Due {new Date(bounty.deadline).toLocaleDateString()}
+          </span>
         </div>
-        <div className="flex items-center space-x-2">
-          <span>Deadline: {new Date(bounty.deadline).toLocaleDateString()}</span>
-        </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </Link>
   );
 };
 
@@ -306,10 +417,12 @@ export default function BountyBoardPage() {
           filterOpen={filterOpen}
           setFilterOpen={setFilterOpen}
         />
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredBounties.map((bounty) => (
-            <BountyCard key={bounty.id} bounty={bounty} />
-          ))}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredBounties.map((bounty) => (
+              <BountyCard key={bounty.id} bounty={bounty} />
+            ))}
+          </div>
         </div>
       </div>
     </div>

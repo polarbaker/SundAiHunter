@@ -7,37 +7,53 @@ import Typewriter from "typewriter-effect";
 import { useState } from "react";
 import { usePullToRefresh } from "@/hooks/usePullToRefresh";
 import { useTheme } from "@/contexts/ThemeContext";
+import StatsSection from "@/components/StatsSection";
+import SubmitBountyModal from '@/components/SubmitBountyModal';
+import { BountyType } from '@/app/bounty-board/page';
 
 export default function Home() {
   const [isTypingDone, setIsTypingDone] = useState(false);
   const { isDarkMode } = useTheme();
+  const [submitModalOpen, setSubmitModalOpen] = useState(false);
 
   usePullToRefresh();
 
-  const bounties = [
+  const featuredBounties: BountyType[] = [
     {
-      id: 1,
+      id: "1",
       title: "Implement Dark Mode for React Component Library",
       description: "Add dark mode support to our open source React component library using CSS variables and theme context.",
-      amount: "$500",
+      sponsorName: "OpenSource Labs",
+      prize: 500,
+      type: "Remote Small",
+      deadline: "2024-02-01",
       status: "Open",
-      technologies: ["React", "TypeScript"]
+      category: "Frontend",
+      image: "/images/default_project_thumbnail_dark.svg"
     },
     {
-      id: 2,
+      id: "2",
       title: "Build AI-Powered Code Review Bot",
       description: "Create a GitHub bot that uses AI to provide intelligent code review suggestions and improvements.",
-      amount: "$750",
+      sponsorName: "AI Solutions Inc",
+      prize: 750,
+      type: "Remote Medium",
+      deadline: "2024-02-15",
       status: "Open",
-      technologies: ["Python", "OpenAI", "GitHub API"]
+      category: "Backend",
+      image: "/images/default_project_thumbnail_dark.svg"
     },
     {
-      id: 3,
+      id: "3",
       title: "Develop Real-time Collaboration Features",
       description: "Implement real-time collaboration features for our AI prototype platform using WebSocket.",
-      amount: "$1000",
+      sponsorName: "Tech Innovators",
+      prize: 1000,
+      type: "Remote Large",
+      deadline: "2024-02-28",
       status: "Open",
-      technologies: ["WebSocket", "Node.js", "Redis"]
+      category: "Backend",
+      image: "/images/default_project_thumbnail_dark.svg"
     }
   ];
 
@@ -55,6 +71,14 @@ export default function Home() {
       },
     },
   };
+
+  const topHunters = [
+    { rank: 1, name: "Guido Vranken", points: "52100", trophy: "🏆" },
+    { rank: 2, name: "Martin Holst Swende", points: "45000", trophy: "🥈" },
+    { rank: 3, name: "protolambda", points: "42400", trophy: "🥉" },
+    { rank: 4, name: "Sam Sun", points: "35000" },
+    { rank: 5, name: "nrv (@nervoir)", points: "31000" },
+  ];
 
   return (
     <div
@@ -78,160 +102,196 @@ export default function Home() {
             }}
           />
 
-          {/* Hero Content */}
+          {/* Updated Hero Content */}
           <div className="relative z-20">
             <motion.div
-              className="w-full text-center mb-8"
+              className="max-w-4xl mx-auto text-left"
               initial={{ opacity: 0, y: -50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              <h1
-                className={`font-semibold text-2xl sm:text-3xl md:text-4xl lg:text-5xl mb-6 font-space-mono tracking-tight ${
-                  isDarkMode ? "text-gray-100" : "text-gray-900"
-                }`}
-              >
-                Sundai
+              <h1 className={`font-semibold text-4xl sm:text-5xl md:text-6xl mb-6 font-space-mono tracking-tight ${
+                isDarkMode ? "text-gray-100" : "text-gray-900"
+              }`}>
+                <Typewriter
+                  onInit={(typewriter) => {
+                    typewriter
+                      .changeDelay(70)
+                      .typeString("Changing the way")
+                      .pauseFor(300)
+                      .typeString("<br />we collaborate.")
+                      .callFunction(() => {
+                        setIsTypingDone(true);
+                      })
+                      .start();
+                  }}
+                  options={{
+                    cursor: '|',
+                    cursorClassName: `${isDarkMode ? "text-gray-100" : "text-gray-900"}`,
+                    wrapperClassName: `${isDarkMode ? "text-gray-100" : "text-gray-900"}`
+                  }}
+                />
               </h1>
-              <p
-                className={`text-base sm:text-lg md:text-xl mb-8 max-w-xl mx-auto font-fira-code ${
-                  isDarkMode ? "text-gray-300" : "text-gray-700"
-                }`}
-              >
-                Building & Launching AI Prototypes Every Sunday.
+              <p className={`text-lg md:text-xl mb-8 max-w-2xl ${
+                isDarkMode ? "text-gray-300" : "text-gray-700"
+              }`}>
+                The Bounties Network empowers humans to incentivize and self-organize, from freelancing 
+                to grassroots social action, and anything in between. Whether it's for research, content 
+                translation, or video production, create projects, collaborate, and get paid for doing 
+                great work in any domain.
               </p>
 
-              <div
-                className={`grid grid-cols-1 sm:grid-cols-3 gap-4 items-center max-w-lg mx-auto mb-12 ${
-                  isDarkMode
-                    ? "bg-gray-800 shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)]"
-                    : "bg-gray-100 shadow-[inset_0_2px_4px_rgba(0,0,0,0.1)]"
-                } rounded-xl p-4 sm:p-6`}
-              >
-                <motion.div
-                  className="flex justify-center items-center relative rounded-lg p-2 sm:p-4"
-                  variants={stompVariants}
-                  initial="hidden"
-                  animate={isTypingDone ? "visible" : "hidden"}
-                  transition={{ delay: 0.2 }}
+              <div className="flex flex-wrap gap-4">
+                <Link 
+                  href="/bounty-board" 
+                  className="btn btn-primary text-lg px-8 py-3"
                 >
-                  <Image
-                    src="/images/affiliations/mit_logo_std_rgb_silver-gray.svg"
-                    style={{ filter: "brightness(1.2)" }}
-                    className="w-16 h-16 sm:w-24 sm:h-24 opacity-90"
-                    alt="Logo MIT"
-                    width={96}
-                    height={96}
-                  />
-                </motion.div>
-                <div
-                  className={`text-base sm:text-xl font-mono h-full mt-2 sm:mt-8 text-center px-2 sm:px-4 py-1 sm:py-2 rounded-lg ${
-                    isDarkMode ? "text-gray-200" : "text-gray-800"
-                  }`}
+                  Explore Bounties
+                </Link>
+                <button
+                  onClick={() => setSubmitModalOpen(true)}
+                  className="btn btn-secondary text-lg px-8 py-3 flex items-center gap-2"
                 >
-                  <Typewriter
-                    onInit={(typewriter) => {
-                      typewriter
-                        .changeDelay(70)
-                        .typeString("We are hackers from")
-                        .callFunction(() => {
-                          setIsTypingDone(true);
-                        })
-                        .start();
-                    }}
-                  />
-                </div>
-                <motion.div
-                  className="flex justify-center items-center relative rounded-lg p-2 sm:p-4"
-                  variants={stompVariants}
-                  initial="hidden"
-                  animate={isTypingDone ? "visible" : "hidden"}
-                  transition={{ delay: 0.4 }}
-                >
-                  <Image
-                    src="/images/affiliations/harvard-university-seeklogo.svg"
-                    className="w-14 h-14 sm:w-20 sm:h-20 opacity-90"
-                    style={{ filter: "grayscale(100%)" }}
-                    alt="Logo Harvard"
-                    width={80}
-                    height={80}
-                  />
-                </motion.div>
+                  <span>Join our Slack</span>
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.4 2.4c-.3-.3-.7-.4-1.1-.4-.4 0-.8.1-1.1.4l-14 14c-.3.3-.4.7-.4 1.1 0 .4.1.8.4 1.1.3.3.7.4 1.1.4.4 0 .8-.1 1.1-.4l14-14c.3-.3.4-.7.4-1.1 0-.4-.1-.8-.4-1.1z"/>
+                  </svg>
+                </button>
               </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Bounties Section */}
-      <motion.section
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 1.3 }}
-        className="container mx-auto px-4 py-24"
-      >
-        <div className="max-w-screen-xl mx-auto">
-          <h2 className={`text-3xl font-bold mb-8 ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>
-            Featured Bounties
-          </h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {bounties.map((bounty) => (
-              <div 
-                key={bounty.id} 
-                className={`rounded-xl p-6 transition-all duration-200 ${
-                  isDarkMode 
-                    ? 'bg-gray-800/50 hover:bg-gray-800/80 border border-gray-700' 
-                    : 'bg-white/50 hover:bg-white shadow-lg'
-                }`}
-              >
-                <div className="flex items-start justify-between">
-                  <div>
-                    <h3 className={`text-lg font-bold ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>
-                      {bounty.title}
-                    </h3>
-                    <p className={`mt-2 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                      {bounty.description}
-                    </p>
-                  </div>
-                  <span className="text-primary font-mono font-bold">
-                    {bounty.amount}
-                  </span>
-                </div>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {bounty.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="rounded-full bg-primary/10 px-3 py-1 text-sm text-primary border border-primary/20"
+      {/* Bounties and Leaderboard Grid */}
+      <div className="container mx-auto px-4">
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Bounties Section */}
+          <motion.section
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1.3 }}
+            className="py-24"
+          >
+            <div className="max-w-screen-xl">
+              <h2 className={`text-3xl font-bold mb-8 ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>
+                Featured Bounties
+              </h2>
+              <div className="grid gap-6">
+                {featuredBounties.map((bounty) => (
+                  <Link 
+                    key={bounty.id}
+                    href={`/bounty/${bounty.id}`}
+                  >
+                    <div 
+                      className={`rounded-xl overflow-hidden transition-all duration-200 ${
+                        isDarkMode 
+                          ? 'bg-gray-800/50 hover:bg-gray-800/80 border border-gray-700' 
+                          : 'bg-white/50 hover:bg-white shadow-lg'
+                      }`}
                     >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
+                      <div className="relative h-48 w-full">
+                        <Image
+                          src={bounty.image}
+                          alt={bounty.title}
+                          width={800}
+                          height={400}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="p-6">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h3 className={`text-lg font-bold ${isDarkMode ? 'text-gray-100' : 'text-gray-900'}`}>
+                              {bounty.title}
+                            </h3>
+                            <p className={`mt-2 text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                              {bounty.description}
+                            </p>
+                          </div>
+                          <span className="text-primary font-mono font-bold">
+                            ${bounty.prize.toLocaleString()}
+                          </span>
+                        </div>
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          <span className="rounded-full bg-primary/10 px-3 py-1 text-sm text-primary border border-primary/20">
+                            {bounty.category}
+                          </span>
+                          <span className="rounded-full bg-primary/10 px-3 py-1 text-sm text-primary border border-primary/20">
+                            {bounty.type}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
               </div>
-            ))}
-          </div>
-          
-          {/* View All Bounties Button */}
-          <div className="mt-12 text-center">
-            <Link
-              href="/bounty-board"
-              className={`inline-flex items-center justify-center gap-2 ${
-                isDarkMode
-                  ? "bg-indigo-700 hover:bg-indigo-600"
-                  : "bg-indigo-600 hover:bg-indigo-700"
-              } text-white font-semibold px-8 py-4 rounded-full transition-all duration-300`}
-            >
-              View All Bounties
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
-          </div>
+            </div>
+          </motion.section>
+
+          {/* Leaderboard Section */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className={`${
+              isDarkMode ? 'bg-gray-800' : 'bg-white'
+            } rounded-xl shadow-lg p-6 h-fit mt-24`}
+          >
+            <h2 className="text-2xl font-bold mb-6">Top Hunters</h2>
+            <div className="space-y-4">
+              {topHunters.map((hunter) => (
+                <div 
+                  key={hunter.rank} 
+                  className={`flex items-center justify-between p-4 rounded-lg transition-colors ${
+                    isDarkMode 
+                      ? 'hover:bg-gray-700' 
+                      : 'hover:bg-gray-50'
+                  }`}
+                >
+                  <div className="flex items-center gap-4">
+                    <span className="text-gray-500 w-6">{hunter.rank}</span>
+                    <span className="font-medium">{hunter.name}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className={`${
+                      isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                    }`}>
+                      {hunter.points} points
+                    </span>
+                    {hunter.trophy && <span>{hunter.trophy}</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-6 text-center">
+              <Link
+                href="/leaderboard"
+                className="text-primary hover:text-primary-hover font-medium"
+              >
+                See full leaderboards
+              </Link>
+            </div>
+          </motion.section>
         </div>
-      </motion.section>
+      </div>
+
+      {/* Stats Section - Added right before the footer */}
+      <div className="mt-24">
+        <StatsSection />
+      </div>
 
       {/* Footer */}
-      <footer className="bg-[#0B0F17] py-4 px-6">
+      <motion.footer
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.8 }}
+        className={`${
+          isDarkMode
+            ? "bg-gradient-to-r from-gray-900 to-gray-800 text-gray-200"
+            : "bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700"
+        } py-6 md:py-2`}
+      >
         <div className="container mx-auto flex justify-between items-center">
           {/* Copyright */}
           <p className="text-sm text-gray-400">
@@ -286,7 +346,12 @@ export default function Home() {
             </Link>
           </div>
         </div>
-      </footer>
+      </motion.footer>
+
+      <SubmitBountyModal
+        isOpen={submitModalOpen}
+        onClose={() => setSubmitModalOpen(false)}
+      />
     </div>
   );
 }
